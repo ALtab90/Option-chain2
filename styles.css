@@ -1,0 +1,202 @@
+/* ATM row styling */
+.atm-border {
+    position: relative;
+    z-index: 10;
+}
+
+.atm-cell {
+    background-color: rgba(230, 57, 70, 0.15) !important;
+    font-weight: bold !important;
+}
+
+.atm-strike {
+    font-weight: bold !important;
+    color: #e63946 !important;
+    font-size: 115% !important;
+    position: relative;
+    text-shadow: 0px 0px 3px rgba(230, 57, 70, 0.3);
+}
+
+/* Optimize scrolling with hardware acceleration */
+.options-chain-container {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none; /* Prevent scroll bouncing */
+    will-change: transform; /* Hardware acceleration hint */
+    transform: translateZ(0); /* Force GPU acceleration */
+    backface-visibility: hidden; /* Reduce painting */
+    perspective: 1000px; /* 3D acceleration */
+    /* Ensure user can still scroll even if performance drops */
+    scrollbar-width: auto;
+    overflow-anchor: none;
+    /* Add new property for better scroll position memory */
+    overflow-anchor: none !important;
+    scroll-snap-type: y proximity;
+}
+
+/* Prevent layout shifts during scroll */
+body.is-scrolling .options-chain-container,
+.options-chain-container.is-scrolling {
+    overflow-anchor: none;
+    pointer-events: none;
+}
+
+/* Hardware accelerated scrolling */
+.options-chain-container:not(.is-scrolling) {
+    transition: scroll-position 0.2s ease-out;
+}
+
+/* Reduce rendering load during scroll */
+.options-chain-container.is-scrolling tbody {
+    opacity: 0.98; /* Slight transparency to reduce rendering cost */
+}
+
+/* Optimize scrollbar appearance and performance */
+.options-chain-container::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+    will-change: width;
+    transform: translateZ(0);
+}
+
+.options-chain-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 7px;
+    transform: translateZ(0);
+}
+
+.options-chain-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 7px;
+    border: 2px solid #f1f1f1;
+    transform: translateZ(0);
+}
+
+/* Add overscroll indicator */
+@keyframes scrollGlow {
+    0% { box-shadow: inset 0 5px 15px rgba(0,0,0,0); }
+    100% { box-shadow: inset 0 5px 15px rgba(0,0,0,0.2); }
+}
+
+.options-chain-container.is-scrolling {
+    animation: scrollGlow 0.3s forwards;
+}
+
+/* Flash animation for ATM highlight */
+@keyframes atm-flash {
+    0% { background-color: rgba(230, 57, 70, 0.1); }
+    50% { background-color: rgba(230, 57, 70, 0.5); }
+    100% { background-color: rgba(230, 57, 70, 0.1); }
+}
+
+.highlight-atm {
+    animation: atm-flash 1s ease-in-out 2;
+}
+
+/* Optimize table layout */
+#optionsChainTable {
+    table-layout: fixed;
+    width: 100%;
+    contain: layout style; /* Containment for performance */
+}
+
+/* Optimize tbody rendering */
+#optionsChainTable tbody {
+    position: relative;
+    contain: layout style paint; /* Containment for performance */
+}
+
+/* Fixed row height to prevent layout shifts */
+#optionsChainTable tr {
+    height: 36px; /* Set a fixed height for all rows */
+    contain: layout style; /* Containment for performance */
+}
+
+/* Optimize table cells for performance */
+#optionsChainTable td {
+    contain: content; /* Containment for performance */
+    will-change: opacity; /* Hardware acceleration hint */
+}
+
+/* Additional styling for ATM border to make it more visible */
+tr.atm-row {
+    position: relative;
+}
+
+tr.atm-row::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background-color: #e63946;
+}
+
+tr.atm-row::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background-color: #e63946;
+}
+
+/* Optimize app container */
+.app-container {
+    transform: translateZ(0); /* Force GPU acceleration */
+    backface-visibility: hidden; /* Reduce painting */
+    perspective: 1000px; /* 3D acceleration */
+}
+
+/* Highlight the last viewed row subtly */
+.last-viewed-row {
+    position: relative;
+}
+
+.last-viewed-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background-color: #3498db;
+    opacity: 0;
+}
+
+/* Add scroll snap points for better position memory */
+#optionsChainTable tbody tr {
+    scroll-snap-align: start;
+}
+
+/* Make ATM row a stronger snap point */
+tr.atm-row {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+}
+
+/* Add a stable visual marker to ATM row */
+tr.atm-row::before,
+tr.atm-row::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 100%;
+    background-color: #e63946;
+    z-index: 100;
+}
+
+tr.atm-row::before {
+    left: -8px;
+}
+
+tr.atm-row::after {
+    right: -8px;
+}
+
+/* When scrolling, keep table cells visually stable */
+.is-scrolling #optionsChainTable td {
+    transition: none !important;
+} 
